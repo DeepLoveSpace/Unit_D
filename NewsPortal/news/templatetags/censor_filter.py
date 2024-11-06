@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 CENSOR_WORDS = [
-    'дурак', 'instagramm', 'редиска', 'youtube'
+    'дурак', 'редиска', 'какашка', 'бяка'
 ]
 
 
