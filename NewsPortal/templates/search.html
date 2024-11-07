@@ -2,32 +2,30 @@
 {% load censor_filter %}
 {% load custom_tags %}
 
+
+
 {% block title %}
-NEWS
+Поиск по новостям
 {% endblock title %}
 
 {% block content %}
-<h1>Главные новости</h1>
+  <h1>Поиск</h1>
+  <h3>Всего новостей: {{news|length}}</h3>
+
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+
+   </form>
+
 <hr>
-
-   <h3>Всего опубликовано: <mark>{{ news|length }}</mark></h3>
-   <h3> Сегодня: {{ time_now|date:'M d Y' }}</h3>
-
-        <a class="btn btn-primary" type="submit" href="search/">Поиск</a>
-        <br>
-        <br>
-        <a class="btn btn-primary" type="submit" href="create/">Опубликовать новость</a>
-    <hr>
    {% if news %}
-    <center>
        <table>
            <tr>
-
-               <td><b>Заголовок</b></td>
-               <td><b>Дата публикации</b></td>
-               <td><b>Содержание</b></td>
-               <td><b>Рейтин</b></td>
-
+               <td>Заголовок</td>
+               <td>Дата публикации</td>
+               <td>Содержание</td>
+               <td>Рейтин</td>
            </tr>
 
            {% for post in news%}
@@ -35,26 +33,28 @@ NEWS
                <td>{{ post.title|censor }}</td>
                <td>{{ post.post_time|date:'d M Y' }}</td>
                <td>{{ post.text|truncatewords:20|censor }}</td>
-               <td><center>{{ post.rating }}</center></td>
-               <td><a href="{% url 'post_update' pk=post.id %}"> Изменить </a></td>
-               <td><a href="{% url 'post_delete' post.id %}"> Удалить </a></td>
+               <td>{{ post.rating }}</td>
            </tr>
            {% endfor %}
 
        </table>
-    </center>
    {% else %}
        <h2>Новостей нет!</h2>
    {% endif %}
 
-   {% if page_obj.has_previous %}
+
+{# Добавляем пагинацию на страницу #}
+
+  {% if page_obj.has_previous %}
        <a href="?{% url_replace page=1 %}">1</a>
        {% if page_obj.previous_page_number != 1 %}
            ...
            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
+
    {{ page_obj.number }}
+
    {% if page_obj.has_next %}
        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
