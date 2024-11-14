@@ -14,9 +14,26 @@ NEWS
    <h3> Сегодня: {{ time_now|date:'M d Y' }}</h3>
 
         <a class="btn btn-primary" type="submit" href="search/">Поиск</a>
-        <br>
-        <br>
-        <a class="btn btn-primary" type="submit" href="create/">Опубликовать новость</a>
+<br>
+<br>
+
+{% load cache %}
+{% cache 100 submit %}
+     {% if perms.news.add_post %}
+    <a class="btn btn-primary" type="submit" href="create/">Опубликовать новость</a>
+    {% endif %}
+    <br>
+    <br>
+     {% if perms.news.add_post %}
+    <a class="btn btn-primary" type="submit" href="articles/create/">Опубликовать статью</a>
+    {% endif %}
+    <br>
+    <br>
+    {% if perms.news.add_post %}
+    <a class="btn btn-primary" type="submit" href="subscriptions/">Управление подписками</a>
+    {% endif %}
+{% endcache %}
+
     <hr>
    {% if news %}
     <center>
@@ -36,8 +53,12 @@ NEWS
                <td>{{ post.post_time|date:'d M Y' }}</td>
                <td>{{ post.text|truncatewords:20|censor }}</td>
                <td><center>{{ post.rating }}</center></td>
+               {% if perms.news.change_post %}
                <td><a href="{% url 'post_update' pk=post.id %}"> Изменить </a></td>
+               {% endif %}
+               {% if perms.news.delete_post %}
                <td><a href="{% url 'post_delete' post.id %}"> Удалить </a></td>
+               {% endif %}
            </tr>
            {% endfor %}
 
