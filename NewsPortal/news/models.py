@@ -80,4 +80,4 @@ class Comment(models.Model):
         self.save()
 
     def __str__(self):
-        return self.post.text()
+        return self.post.text
