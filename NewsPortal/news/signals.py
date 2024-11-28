@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from .models import PostCategory
 
 
+# Добавьте подписки на рассылки о новых материалах в категориях
 @receiver(m2m_changed, sender=PostCategory)
 def post_created(sender, instance, **kwargs):
     if not kwargs['action'] == 'post_add':
