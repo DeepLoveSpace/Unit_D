@@ -168,4 +168,12 @@ DEFAULT_FROM_EMAIL = 'titan182@yandex.ru'
 
 SERVER_EMAIL = 'titan182@yandex.ru'
 
+APSHEDULER_DARETIME_FORMAT = 'N, j, Y, f:s a'
+APSHEDULER_RUN_NOW_TIMEOUT = 25
+SITE_URL = 'http://127.0.0.1:8000'
 
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
