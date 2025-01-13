@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import PostFilter
@@ -12,6 +13,8 @@ from .forms import NewsForm
 from .models import Post, Category, Subscription
 from .resources import article
 from django.core.cache import cache
+from django.utils.translation import gettext as _
+from django.http.response import HttpResponse
 
 
 class PostsList(ListView):
