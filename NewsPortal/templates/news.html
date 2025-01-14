@@ -1,36 +1,70 @@
 {% extends 'flatpages/default.html' %}
 {% load censor_filter %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block title %}
-NEWS
+{% trans 'NEWS' %}
 {% endblock title %}
 
+
 {% block content %}
-<h1>Главные новости</h1>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page title</title>
+</head>
+
+<body>
+    <div align="right">
+    <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+        <input type="hidden" name="next" value="{{ redirect_to }}">
+        {% get_current_language as LANGUAGE_CODE %}
+        <select name="language" id="">
+            {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+            {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+            {% get_current_language as LANGUAGE_CODE %}
+            {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                    {{ language.name_local }} - {{ language.code }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="set">
+    </form>
+    </div>
+</body>
+
+</html>
+
+
+<h1>{% trans 'All news' %}</h1>
 <hr>
 
-   <h3>Всего опубликовано: <mark>{{ news|length }}</mark></h3>
-   <h3> Сегодня: {{ time_now|date:'M d Y' }}</h3>
+   <h3>{% trans 'Total published:' %} <mark>{{ news|length }}</mark></h3>
+   <h3> {% trans 'Today:' %} {{ time_now|date:'M d Y' }}</h3>
 
-        <a class="btn btn-primary" type="submit" href="search/">Поиск</a>
+        <a class="btn btn-primary" type="submit" href="search/">{% trans 'To find' %}</a>
 <br>
 <br>
 
 {% load cache %}
 {% cache 100 submit %}
      {% if perms.news.add_post %}
-    <a class="btn btn-primary" type="submit" href="create/">Опубликовать новость</a>
+    <a class="btn btn-primary" type="submit" href="create/">{% trans 'Publish the news' %}</a>
     {% endif %}
     <br>
     <br>
      {% if perms.news.add_post %}
-    <a class="btn btn-primary" type="submit" href="articles/create/">Опубликовать статью</a>
+    <a class="btn btn-primary" type="submit" href="articles/create/">{% trans 'Publish an article' %}</a>
     {% endif %}
     <br>
     <br>
     {% if perms.news.add_post %}
-    <a class="btn btn-primary" type="submit" href="subscriptions/">Управление подписками</a>
+    <a class="btn btn-primary" type="submit" href="subscriptions/">{% trans 'Subscription Management' %}</a>
     {% endif %}
 {% endcache %}
 
@@ -40,10 +74,10 @@ NEWS
        <table>
            <tr>
 
-               <td><b>Заголовок</b></td>
-               <td><b>Дата публикации</b></td>
-               <td><b>Содержание</b></td>
-               <td><b>Рейтинг</b></td>
+               <td><b>{% trans 'Heading' %}</b></td>
+               <td><b>{% trans 'Date of publication' %}</b></td>
+               <td><b>{% trans 'Content' %}</b></td>
+               <td><b>{% trans 'Rating' %}</b></td>
 
            </tr>
 
@@ -54,10 +88,10 @@ NEWS
                <td>{{ post.text|truncatewords:20|censor }}</td>
                <td><center>{{ post.rating }}</center></td>
                {% if perms.news.change_post %}
-               <td><a href="{% url 'post_update' pk=post.id %}"> Изменить </a></td>
+               <td><a href="{% url 'post_update' pk=post.id %}"> {% trans 'To change' %} </a></td>
                {% endif %}
                {% if perms.news.delete_post %}
-               <td><a href="{% url 'post_delete' post.id %}"> Удалить </a></td>
+               <td><a href="{% url 'post_delete' post.id %}"> {% trans 'Delete' %} </a></td>
                {% endif %}
            </tr>
            {% endfor %}
@@ -65,7 +99,7 @@ NEWS
        </table>
     </center>
    {% else %}
-       <h2>Новостей нет!</h2>
+       <h2>{% trans 'There is no news!' %}</h2>
    {% endif %}
 
    {% if page_obj.has_previous %}

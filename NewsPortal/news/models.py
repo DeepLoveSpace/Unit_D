@@ -5,6 +5,8 @@ from django.db.models.functions import Coalesce
 from .resources import CONTENT, news
 from django.urls import reverse
 from django.core.cache import cache
+from django.utils.translation import gettext as _
+from django.utils.translation import pgettext_lazy
 
 
 class Author(models.Model):
@@ -27,7 +29,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30, unique=True, help_text=_('category name'))
 
     def __str__(self):
         return self.name
