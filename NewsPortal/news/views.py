@@ -36,7 +36,13 @@ class PostsList(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         context['time_now'] = datetime.utcnow()
+        context['current_time'] = timezone.localtime(timezone.now())
+        context['timezones'] = pytz.common_timezones
         return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect(self.request.path)
 
 
 class PostDetail(DetailView):
