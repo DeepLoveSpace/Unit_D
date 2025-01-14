@@ -29,7 +29,7 @@
             {% get_current_language as LANGUAGE_CODE %}
             {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
                 <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
-                    {{ language.name_local }} - {{ language.code }}
+                    {{ language.name }} - {{ language.code }}
                 </option>
             {% endfor %}
         </select>
