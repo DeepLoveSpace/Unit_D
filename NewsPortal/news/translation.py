@@ -9,21 +9,6 @@ class CategoryTranslationOptions(TranslationOptions):
     fields = ('name',)  # указываем, какие именно поля надо переводить в виде кортежа
 
 
-@register(Author)
-class AuthorTranslationOptions(TranslationOptions):
-    fields = ('user',)
-
 @register(Post)
 class PostTranslationOptions(TranslationOptions):
-    fields = ('author',)
-
-
-@register(PostCategory)
-class PostCategoryTranslationOptions(TranslationOptions):
-    fields = ('post',)
-
-
-@register(Comment)
-class CommentTranslationOptions(TranslationOptions):
-    fields = ('post',)
-
+    fields = ('title', 'text')
