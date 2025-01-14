@@ -7,20 +7,8 @@ class CategoryAdmin(TranslationAdmin):
     model = Category
 
 
-class AuthorAdmin(TranslationAdmin):
-    model = Author
-
-
 class PostAdmin(TranslationAdmin):
     model = Post
-
-
-class PostCategoryAdmin(TranslationAdmin):
-    model = PostCategory
-
-
-class CommentAdmin(TranslationAdmin):
-    model = Comment
 
 
 admin.site.register(Author)
